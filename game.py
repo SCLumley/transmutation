@@ -215,13 +215,14 @@ class game:
                 elif "can be found in the Domain of" in p:
                     for domainindex,domain in enumerate(self.domainMatrix):
                         for cell in domain:
-                            if "Mind" in self.effects[cell] and "Mind" in p:
+                            #print(domain,cell)
+                            if "Essence of Mind" in self.effects[cell-1] and "Mind" in p:
                                 textbuffer += "\t" + p.format(self.domains[domainindex]) + "\n"
                                 break
-                            if "Body" in self.effects[cell] and "Body" in p:
+                            if "Essence of Body" in self.effects[cell-1] and "Body" in p:
                                 textbuffer += "\t" + p.format(self.domains[domainindex]) + "\n"
                                 break
-                            if "Spirit" in self.effects[cell] and "Spirit" in p:
+                            if "Essence of Spirit" in self.effects[cell-1] and "Spirit" in p:
                                 textbuffer += "\t" + p.format(self.domains[domainindex]) + "\n"
                                 break
                 elif "The Domain of " in p:
