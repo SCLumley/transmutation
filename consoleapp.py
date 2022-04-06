@@ -6,13 +6,15 @@ dif = input("Input Difficulty:\n")
 
 newGame = game.game(sd,pn,dif)
 
-gameover = False
-while not newGame.won or not gameover:
+print(newGame.getStartingFacts())
+
+quit = False
+while not newGame.getGameOver() or not quit:
     mystring = input("Input recipy to mix:\n")
 
     if mystring == "quit":
         print(newGame.getSolution())
-        gameover=True
+        quit=True
         break
     else:
         newGame.mix(mystring)
