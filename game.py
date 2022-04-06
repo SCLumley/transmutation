@@ -101,8 +101,8 @@ class game:
         ]
 
         self.solMatrix = self.shufflesol(self.solMatrix)
-        self.recipeHistory = []
-        self.resultHistory = []
+        self.recipeHistory = [""]
+        self.resultHistory = [""]
         self.startingFacts = []
 
         #setup starting facts
@@ -132,19 +132,20 @@ class game:
     def setupStartingFacts(self):
         textbuffer = ""
         if self.difficulty == 0:
-            textbuffer += "You start your search with no known reactions.\n"
+            textbuffer += "You start your search with little to go on.\n"
         else:
             textbuffer += "You have Learned that:\n"
-            startingEffects = self.effects
-            self.plyrng.shuffle(startingEffects)
-            knownEffects = startingEffects[ 0 : self.difficulty ]
-            for effect in knownEffects:
-                effectindex = self.effects.index(effect) + 1
-                for row in range(0,5):
-                    for column in range(0,5):
-                        if effectindex == self.solMatrix[row][column]:
-                            textbuffer += self.ingredients[row] + self.ingredients[column] + " produces a strong reaction.\n"
-
+            textbuffer += "There are {} exhaustible reactions.\n".format(self.NoptEffects)
+            if self.difficulty > 1:
+                startingEffects = self.effects
+                self.plyrng.shuffle(startingEffects)
+                knownEffects = startingEffects[ 0 : self.difficulty-1 ]
+                for effect in knownEffects:
+                    effectindex = self.effects.index(effect) + 1
+                    for row in range(0,5):
+                        for column in range(0,5):
+                            if effectindex == self.solMatrix[row][column]:
+                                textbuffer += self.ingredients[row] + self.ingredients[column] + " produces a strong reaction.\n"
         self.startingFacts = textbuffer
 
 
@@ -152,11 +153,17 @@ class game:
         return self.startingFacts
 
     def mix(self,recipe):
+        if any(c not in 'baqlp' for c in recipe) or len(recipe) >= 2 or len(recipe) <= 7:
+            print('Invalid recipe. a recipe must only contain characters b, a, q, l, or p, and must be between 2 and '
+                  '6 characters long (inclusive)."')
+            return
         textcolour = Fore.WHITE
         textbuffer = ""
         if recipe in self.recipeHistory:
             print("Sorry, you mixed that before. You found the following last time:")
             textcolour = Fore.RED
+
+
         self.recipeHistory.append(recipe)
         pairs = get_overlapping_pairs(recipe)
 
