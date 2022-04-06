@@ -20,15 +20,15 @@ class game:
         self.difficulty = int(difficulty)
 
 
-        self.ingredients = ["b","a","q","l","p"]
-        self.domains = ["Jupiter", "Mars", "Sol", "Mercury", "Saturn"]
+        self.ingredients = ["n","a","q","l","p"]
+        self.domains = ["Jupiter", "Mars", "Sol", "Venus", "Saturn"]
 
         self.mandatoryEffects = [
-            "1 Brimstone Powder",
-            "1 Aqua Forte",
-            "1 Quicksilver",
-            "1 Lead Dust",
-            "1 Phosphoric Salt",
+            "2 Nitre Powder",
+            "2 Aqua Forte",
+            "2 Quicksilver",
+            "2 Lead Dust",
+            "2 Phosphoric Salt",
             "The Mixture has Essence of Mind",
             "The Mixture has Essence of Body",
             "The Mixture has Essence of Spirit"
@@ -39,15 +39,23 @@ class game:
             "2 Dice",
             "2 Dice",
             "2 Dice",
+            "2 Dice",
+            "2 Dice",
             "3 Gold",
             "3 Gold",
-            "6 Gold",
-            "You have found Brimstone Powder has {} horizontal reactions",
+            "3 Gold",
+            "3 Gold",
+            "3 Gold",
+            "3 Gold",
+            "5 Gold",
+            "5 Gold",
+            "5 Gold",
+            "You have found Nitre Powder has {} horizontal reactions",
             "You have found Aqua Forte has {} horizontal reactions",
             "You have found Quicksilver has {} horizontal reactions",
             "You have found Lead Dust has {} horizontal reactions",
             "You have found Phosphoric Salt has {} horizontal reactions",
-            "You have found Brimstone Powder has {} vertical reactions",
+            "You have found Nitre Powder has {} vertical reactions",
             "You have found Aqua Forte has {} vertical reactions",
             "You have found Quicksilver has {} vertical reactions",
             "You have found Lead Dust has {} vertical reactions",
@@ -58,12 +66,12 @@ class game:
             "The Domain of Jupiter has {} reactions",
             "The Domain of Saturn has {} reactions",
             "The Domain of Mars has {} reactions",
-            "The Domain of Mercury has {} reactions",
+            "The Domain of Venus has {} reactions",
             "The Domain of Sol has {} reactions"
         ]
 
         self.rng.shuffle(self.optionalEffects)
-        self.NoptEffects=self.rng.randrange(2,7)
+        self.NoptEffects=self.rng.randrange(2,6)
         self.effects = self.mandatoryEffects + self.optionalEffects[:self.NoptEffects]
         self.vValence = [0,0,0,0,0]
         self.hValence = [0, 0, 0, 0, 0]
@@ -153,10 +161,10 @@ class game:
         return self.startingFacts
 
     def mix(self,recipe):
-        if any(c not in 'baqlp' for c in recipe) or len(recipe) >= 2 or len(recipe) <= 7:
-            print('Invalid recipe. a recipe must only contain characters b, a, q, l, or p, and must be between 2 and '
-                  '6 characters long (inclusive)."')
-            return
+        # if any(c not in 'naqlp' for c in recipe) or len(recipe) >= 2 or len(recipe) <= 7:
+        #     print('Invalid recipe. a recipe must only contain characters n, a, q, l, or p, and must be between 2 and '
+        #           '6 characters long (inclusive)."')
+        #     return
         textcolour = Fore.WHITE
         textbuffer = ""
         if recipe in self.recipeHistory:
@@ -198,7 +206,7 @@ class game:
                 if "Essence" in p:
                     wincount += 1
                 if "vertical reactions" in p:
-                    if "Brimstone Powder" in p:
+                    if "Nitre Powder" in p:
                         textbuffer +="\t"+ p.format(self.vValence[0]) + "\n"
                     if "Aqua Forte" in p:
                         textbuffer +="\t"+ p.format(self.vValence[1]) + "\n"
@@ -209,7 +217,7 @@ class game:
                     if "Phosphoric Salt" in p:
                         textbuffer +="\t"+ p.format(self.vValence[4]) + "\n"
                 elif "horizontal reactions" in p:
-                    if "Brimstone Powder" in p:
+                    if "Nitre Powder" in p:
                         textbuffer +="\t"+ p.format(self.hValence[0]) + "\n"
                     if "Aqua Forte" in p:
                         textbuffer +="\t"+ p.format(self.hValence[1]) + "\n"
@@ -239,7 +247,7 @@ class game:
                         textbuffer += "\t" + p.format(len(self.domainMatrix[1]))
                     if "Sol" in p:
                         textbuffer += "\t" + p.format(len(self.domainMatrix[2]))
-                    if "Mercury" in p:
+                    if "Venus" in p:
                         textbuffer += "\t" + p.format(len(self.domainMatrix[3]))
                     if "Saturn" in p:
                         textbuffer += "\t" + p.format(len(self.domainMatrix[4]))
@@ -250,7 +258,7 @@ class game:
             self.rng.shuffle(nonProducts)
             for p in nonProducts:
                 if "vertical reactions" in p:
-                    if "Brimstone Powder" in p:
+                    if "Nitre Powder" in p:
                         textbuffer +="\t"+ p.format(self.vValence[0]) + "\n"
                     if "Aqua Forte" in p:
                         textbuffer +="\t"+ p.format(self.vValence[1]) + "\n"
@@ -261,7 +269,7 @@ class game:
                     if "Phosphoric Salt" in p:
                         textbuffer +="\t"+ p.format(self.vValence[4]) + "\n"
                 elif "horizontal reactions" in p:
-                    if "Brimstone Powder" in p:
+                    if "Nitre Powder" in p:
                         textbuffer +="\t"+ p.format(self.hValence[0]) + "\n"
                     if "Aqua Forte" in p:
                         textbuffer +="\t"+ p.format(self.hValence[1]) + "\n"
@@ -289,7 +297,7 @@ class game:
         return self.resultHistory[-1]
 
     def getRecipeHistory(self):
-        self.recipeHistory
+        return self.recipeHistory
 
     def getResultsHistory(self):
         return self.resultHistory

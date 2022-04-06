@@ -32,7 +32,7 @@ newGame = game.game(int(sd),int(pn),int(dif))
 print(newGame.getStartingFacts())
 
 quit = False
-while not newGame.getGameOver() or not quit:
+while not newGame.getGameOver() and not quit :
     mystring = input("Input recipe to mix:\n")
 
     if mystring == "quit":
