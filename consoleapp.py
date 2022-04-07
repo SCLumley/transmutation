@@ -20,12 +20,10 @@ while True:
 
 while True:
     dif = input("Input Difficulty (0-5, hardest is 0):\n")
-    if dif.isnumeric() and int(dif) >= 0 and int(dif) < 5:
+    if dif.isnumeric() and int(dif) >= 0 and int(dif) <= 5:
         break
     else:
         print("invalid Difficulty. Please input a integer between 0 and 5 (inclusive)")
-
-
 
 newGame = game.game(int(sd),int(pn),int(dif))
 
@@ -36,10 +34,10 @@ while not newGame.getGameOver() and not quit :
     mystring = input("Input recipe to mix:\n")
 
     if mystring == "quit":
-        print(newGame.getSolution())
         quit=True
         break
     else:
         newGame.mix(mystring)
         print(newGame.getLastResult())
 
+print(newGame.getSolution())

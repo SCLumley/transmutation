@@ -14,6 +14,7 @@ def get_overlapping_pairs(string):
 
 class game:
     def __init__(self, seed, playerNo=1,difficulty=2):
+        self.gameSeed=seed
         self.rng = random.Random(seed)
         self.plyrng = random.Random(seed + playerNo)
         self.won = False
@@ -21,11 +22,12 @@ class game:
 
 
         self.ingredients = ["n","a","q","l","p"]
+        self.ingredientsLongnames = ["Nitre Powder", "Aqua Fortis", "Quicksilver", "Lead Dust", "Phosphoric Salt"]
         self.domains = ["Jupiter", "Mars", "Sol", "Venus", "Saturn"]
 
         self.mandatoryEffects = [
             "2 Nitre Powder",
-            "2 Aqua Forte",
+            "2 Aqua Fortis",
             "2 Quicksilver",
             "2 Lead Dust",
             "2 Phosphoric Salt",
@@ -34,7 +36,7 @@ class game:
             "The Mixture has Essence of Spirit"
         ]
 
-        self.optionalEffects = [
+        self.bonusEffects = [
             "2 Dice",
             "2 Dice",
             "2 Dice",
@@ -49,7 +51,10 @@ class game:
             "3 Gold",
             "5 Gold",
             "5 Gold",
-            "5 Gold",
+            "5 Gold"
+        ]
+
+        self.informationEffects = [
             "You have found Nitre Powder has {} horizontal reactions",
             "You have found Aqua Forte has {} horizontal reactions",
             "You have found Quicksilver has {} horizontal reactions",
@@ -67,12 +72,19 @@ class game:
             "The Domain of Saturn has {} reactions",
             "The Domain of Mars has {} reactions",
             "The Domain of Venus has {} reactions",
-            "The Domain of Sol has {} reactions"
+            "The Domain of Sol has {} reactions",
+            "The Mind can be found in the Domain of {}",
+            "The Spirit can be found in the Domain of {}",
+            "The Body can be found in the Domain of {}",
+            "The Mind requires a quantity of {}",
+            "The Spirit requires a quantity of {}",
+            "The Body requires a quantity of {}"
         ]
 
+        self.optionalEffects = self.bonusEffects[:] + self.informationEffects[:]
         self.rng.shuffle(self.optionalEffects)
         self.NoptEffects=self.rng.randrange(2,6)
-        self.effects = self.mandatoryEffects + self.optionalEffects[:self.NoptEffects]
+        self.effects = self.mandatoryEffects[:] + self.optionalEffects[:self.NoptEffects]
         self.vValence = [0,0,0,0,0]
         self.hValence = [0, 0, 0, 0, 0]
 
@@ -141,6 +153,24 @@ class game:
                 textbuffer += "\t" + p.format(self.hValence[3]) + "\n"
             if "Phosphoric Salt" in p:
                 textbuffer += "\t" + p.format(self.hValence[4]) + "\n"
+        elif "requires a quantity" in p:
+            for rowindex, row in enumerate(self.solMatrix):
+                for columnindex,cell in enumerate(row):
+                    if "Essence of Mind" in self.effects[cell - 1] and "Mind" in p:
+                        random.seed(str(self.gameSeed) + "Mind")
+                        ingredient = self.ingredientsLongnames[random.choice((rowindex,columnindex))]
+                        textbuffer += "\t" + p.format(ingredient) + "\n"
+                        break
+                    if "Essence of Body" in self.effects[cell - 1] and "Body" in p:
+                        random.seed(str(self.gameSeed) + "Body")
+                        ingredient = self.ingredientsLongnames[random.choice((rowindex,columnindex))]
+                        textbuffer += "\t" + p.format(ingredient) + "\n"
+                        break
+                    if "Essence of Spirit" in self.effects[cell - 1] and "Spirit" in p:
+                        random.seed(str(self.gameSeed) + "Spirit")
+                        ingredient = self.ingredientsLongnames[random.choice((rowindex,columnindex))]
+                        textbuffer += "\t" + p.format(ingredient) + "\n"
+                        break
         elif "can be found in the Domain of" in p:
             for domainindex, domain in enumerate(self.domainMatrix):
                 for cell in domain:
@@ -156,15 +186,15 @@ class game:
                         break
         elif "The Domain of " in p:
             if "Jupiter" in p:
-                textbuffer += "\t" + p.format(len(self.domainMatrix[0]))
+                textbuffer += "\t" + p.format(len(self.domainMatrix[0])) + "\n"
             if "Mars" in p:
-                textbuffer += "\t" + p.format(len(self.domainMatrix[1]))
+                textbuffer += "\t" + p.format(len(self.domainMatrix[1])) + "\n"
             if "Sol" in p:
-                textbuffer += "\t" + p.format(len(self.domainMatrix[2]))
+                textbuffer += "\t" + p.format(len(self.domainMatrix[2])) + "\n"
             if "Venus" in p:
-                textbuffer += "\t" + p.format(len(self.domainMatrix[3]))
+                textbuffer += "\t" + p.format(len(self.domainMatrix[3])) + "\n"
             if "Saturn" in p:
-                textbuffer += "\t" + p.format(len(self.domainMatrix[4]))
+                textbuffer += "\t" + p.format(len(self.domainMatrix[4])) + "\n"
         else:
             textbuffer += "\t" + p + "\n"
         return textbuffer
@@ -192,17 +222,24 @@ class game:
             textbuffer += "You start your search with little to go on.\n"
         else:
             textbuffer += "You have Learned that:\n"
-            textbuffer += "There are {} exhaustible reactions.\n".format(self.NoptEffects)
-            if self.difficulty > 1:
-                startingEffects = self.effects
+            textbuffer += "\tThere are {} exhaustible reactions.\n".format(self.NoptEffects)
+            if self.difficulty >= 1:
+                startingEffects = self.effects[:]
                 self.plyrng.shuffle(startingEffects)
-                knownEffects = startingEffects[ 0 : self.difficulty-1 ]
+                knownEffects = startingEffects[ 0 : self.difficulty ]
                 for effect in knownEffects:
                     effectindex = self.effects.index(effect) + 1
                     for row in range(0,5):
                         for column in range(0,5):
                             if effectindex == self.solMatrix[row][column]:
-                                textbuffer += self.ingredients[row] + self.ingredients[column] + " produces a strong reaction.\n"
+                                textbuffer += "\t" + self.ingredients[row] + self.ingredients[column] + " produces a strong reaction.\n"
+            if self.difficulty >= 2:
+                startingEffects = self.informationEffects[:]
+                self.plyrng.shuffle(startingEffects)
+                startingEffects = startingEffects[0 : self.difficulty-1]
+                for p in startingEffects:
+                    textbuffer = self.strongRactionResulttoBuffer(p, textbuffer)
+
         self.startingFacts = textbuffer
 
 
@@ -210,10 +247,12 @@ class game:
         return self.startingFacts
 
     def mix(self,recipe):
-        # if any(c not in 'naqlp' for c in recipe) or len(recipe) >= 2 or len(recipe) <= 7:
-        #     print('Invalid recipe. a recipe must only contain characters n, a, q, l, or p, and must be between 2 and '
-        #           '6 characters long (inclusive)."')
-        #     return
+
+        #0 filter out bad invalid recipies
+        if len(set(split(recipe) + self.ingredients)) > len(set(self.ingredients)) or len(recipe) < 2 or len(recipe) > 6:
+            print('Invalid recipe. a recipe must only contain characters n, a, q, l, or p, and must be between 2 and '
+                  '6 characters long (inclusive)."')
+            return
         textcolour = Fore.WHITE
         textbuffer = ""
         if recipe in self.recipeHistory:
