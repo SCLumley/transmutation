@@ -118,7 +118,56 @@ class game:
 
 
 
-
+    def strongRactionResulttoBuffer(self,p,textbuffer):
+        if "vertical reactions" in p:
+            if "Nitre Powder" in p:
+                textbuffer += "\t" + p.format(self.vValence[0]) + "\n"
+            if "Aqua Forte" in p:
+                textbuffer += "\t" + p.format(self.vValence[1]) + "\n"
+            if "Quicksilver" in p:
+                textbuffer += "\t" + p.format(self.vValence[2]) + "\n"
+            if "Lead Dust" in p:
+                textbuffer += "\t" + p.format(self.vValence[3]) + "\n"
+            if "Phosphoric Salt" in p:
+                textbuffer += "\t" + p.format(self.vValence[4]) + "\n"
+        elif "horizontal reactions" in p:
+            if "Nitre Powder" in p:
+                textbuffer += "\t" + p.format(self.hValence[0]) + "\n"
+            if "Aqua Forte" in p:
+                textbuffer += "\t" + p.format(self.hValence[1]) + "\n"
+            if "Quicksilver" in p:
+                textbuffer += "\t" + p.format(self.hValence[2]) + "\n"
+            if "Lead Dust" in p:
+                textbuffer += "\t" + p.format(self.hValence[3]) + "\n"
+            if "Phosphoric Salt" in p:
+                textbuffer += "\t" + p.format(self.hValence[4]) + "\n"
+        elif "can be found in the Domain of" in p:
+            for domainindex, domain in enumerate(self.domainMatrix):
+                for cell in domain:
+                    # print(domain,cell)
+                    if "Essence of Mind" in self.effects[cell - 1] and "Mind" in p:
+                        textbuffer += "\t" + p.format(self.domains[domainindex]) + "\n"
+                        break
+                    if "Essence of Body" in self.effects[cell - 1] and "Body" in p:
+                        textbuffer += "\t" + p.format(self.domains[domainindex]) + "\n"
+                        break
+                    if "Essence of Spirit" in self.effects[cell - 1] and "Spirit" in p:
+                        textbuffer += "\t" + p.format(self.domains[domainindex]) + "\n"
+                        break
+        elif "The Domain of " in p:
+            if "Jupiter" in p:
+                textbuffer += "\t" + p.format(len(self.domainMatrix[0]))
+            if "Mars" in p:
+                textbuffer += "\t" + p.format(len(self.domainMatrix[1]))
+            if "Sol" in p:
+                textbuffer += "\t" + p.format(len(self.domainMatrix[2]))
+            if "Venus" in p:
+                textbuffer += "\t" + p.format(len(self.domainMatrix[3]))
+            if "Saturn" in p:
+                textbuffer += "\t" + p.format(len(self.domainMatrix[4]))
+        else:
+            textbuffer += "\t" + p + "\n"
+        return textbuffer
 
     def shufflesol(self,matrix):
         for effectIndex, effect in enumerate(self.effects):
@@ -180,6 +229,8 @@ class game:
         exhaustedReactions = 0
         products = []
         nonProducts = []
+
+        #1 proccess reactions
         for pair in pairs:
             first = self.ingredients.index(pair[0])
             second = self.ingredients.index(pair[1])
@@ -194,97 +245,27 @@ class game:
                 if self.effects[self.solMatrix[first][second] - 1] in self.optionalEffects:
                     self.exMatrix[first][second] = 1
 
-
         wincount = 0
+
+        #2. store to buffer
         if weakReactions > 0:
             textbuffer += textcolour + "There were: " + str(weakReactions) + " weak reactions.\n"
         if strongReactions > 0:
             textbuffer += textcolour + "There were: " + str(strongReactions) + " strong reactions.\n"
             self.rng.shuffle(products)
-
             for p in products:
                 if "Essence" in p:
                     wincount += 1
-                if "vertical reactions" in p:
-                    if "Nitre Powder" in p:
-                        textbuffer +="\t"+ p.format(self.vValence[0]) + "\n"
-                    if "Aqua Forte" in p:
-                        textbuffer +="\t"+ p.format(self.vValence[1]) + "\n"
-                    if "Quicksilver" in p:
-                        textbuffer +="\t"+ p.format(self.vValence[2]) + "\n"
-                    if "Lead Dust" in p:
-                        textbuffer +="\t"+ p.format(self.vValence[3]) + "\n"
-                    if "Phosphoric Salt" in p:
-                        textbuffer +="\t"+ p.format(self.vValence[4]) + "\n"
-                elif "horizontal reactions" in p:
-                    if "Nitre Powder" in p:
-                        textbuffer +="\t"+ p.format(self.hValence[0]) + "\n"
-                    if "Aqua Forte" in p:
-                        textbuffer +="\t"+ p.format(self.hValence[1]) + "\n"
-                    if "Quicksilver" in p:
-                        textbuffer +="\t"+ p.format(self.hValence[2]) + "\n"
-                    if "Lead Dust" in p:
-                        textbuffer +="\t"+ p.format(self.hValence[3]) + "\n"
-                    if "Phosphoric Salt" in p:
-                        textbuffer +="\t"+ p.format(self.hValence[4]) + "\n"
-                elif "can be found in the Domain of" in p:
-                    for domainindex,domain in enumerate(self.domainMatrix):
-                        for cell in domain:
-                            #print(domain,cell)
-                            if "Essence of Mind" in self.effects[cell-1] and "Mind" in p:
-                                textbuffer += "\t" + p.format(self.domains[domainindex]) + "\n"
-                                break
-                            if "Essence of Body" in self.effects[cell-1] and "Body" in p:
-                                textbuffer += "\t" + p.format(self.domains[domainindex]) + "\n"
-                                break
-                            if "Essence of Spirit" in self.effects[cell-1] and "Spirit" in p:
-                                textbuffer += "\t" + p.format(self.domains[domainindex]) + "\n"
-                                break
-                elif "The Domain of " in p:
-                    if "Jupiter" in p:
-                        textbuffer += "\t" + p.format(len(self.domainMatrix[0]))
-                    if "Mars" in p:
-                        textbuffer += "\t" + p.format(len(self.domainMatrix[1]))
-                    if "Sol" in p:
-                        textbuffer += "\t" + p.format(len(self.domainMatrix[2]))
-                    if "Venus" in p:
-                        textbuffer += "\t" + p.format(len(self.domainMatrix[3]))
-                    if "Saturn" in p:
-                        textbuffer += "\t" + p.format(len(self.domainMatrix[4]))
-                else:
-                    textbuffer +="\t" + p + "\n"
+                textbuffer = self.strongRactionResulttoBuffer(p,textbuffer)
         if exhaustedReactions > 0:
             textbuffer += textcolour + "There were: " + str(exhaustedReactions) + " Exhausted Reactions.\n"
             self.rng.shuffle(nonProducts)
             for p in nonProducts:
-                if "vertical reactions" in p:
-                    if "Nitre Powder" in p:
-                        textbuffer +="\t"+ p.format(self.vValence[0]) + "\n"
-                    if "Aqua Forte" in p:
-                        textbuffer +="\t"+ p.format(self.vValence[1]) + "\n"
-                    if "Quicksilver" in p:
-                        textbuffer +="\t"+ p.format(self.vValence[2]) + "\n"
-                    if "Lead Dust" in p:
-                        textbuffer +="\t"+ p.format(self.vValence[3]) + "\n"
-                    if "Phosphoric Salt" in p:
-                        textbuffer +="\t"+ p.format(self.vValence[4]) + "\n"
-                elif "horizontal reactions" in p:
-                    if "Nitre Powder" in p:
-                        textbuffer +="\t"+ p.format(self.hValence[0]) + "\n"
-                    if "Aqua Forte" in p:
-                        textbuffer +="\t"+ p.format(self.hValence[1]) + "\n"
-                    if "Quicksilver" in p:
-                        textbuffer +="\t"+ p.format(self.hValence[2]) + "\n"
-                    if "Lead Dust" in p:
-                        textbuffer +="\t"+ p.format(self.hValence[3]) + "\n"
-                    if "Phosphoric Salt" in p:
-                        textbuffer +="\t"+ p.format(self.hValence[4]) + "\n"
-                else:
-                    textbuffer +="\t" + p + "\n"
+                textbuffer = self.strongRactionResulttoBuffer(p, textbuffer)
         if weakReactions == 0 and strongReactions == 0 and exhaustedReactions == 0:
             textbuffer += textcolour + "There were no reactions.\n"
         if wincount == 3:
-            textbuffer += Fore.YELLOW + "You have sythesised the philosopher's stone!"
+            textbuffer += Fore.YELLOW + "You have synthesised the philosopher's stone!"
             self.won = True
 
         textbuffer +="\n"
