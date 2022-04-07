@@ -289,7 +289,7 @@ class game:
         textcolour = ""
         textbuffer = ""
         if recipe in self.recipeHistory:
-            print("Sorry, you mixed that before. You found the following last time:")
+            textbuffer += "Sorry, you mixed that before. You found the following last time:"
             textcolour = ""
 
 
@@ -375,15 +375,18 @@ class game:
 from browser import document, html
 import game
 
+newGame=game.game(123,1,3)
+document<=newGame.getStartingFacts()
+
+
 # Create the calc table 
 calc = html.TABLE()
 
 # The display pad and C
-calc <= html.TR(html.TH(html.DIV("0", id="result"), colspan=3) +
-                html.TD("C"))
+calc <= html.TR(html.TH(html.DIV("", id="result"), colspan=7))
 
 # The number pad 
-lines = ["789/", "456*", "123-", "0.=+"]
+lines = ["MCnaqlp"]
 
 calc <= (html.TR(html.TD(x) for x in line) for line in lines)
 
@@ -402,21 +405,17 @@ def action(event):
     element = event.target
     # The text printed on the button is the element's "text" attribute
     value = element.text
-    if value not in "=C":
+    if value not in "MC":
         # update the result zone
-        if result.text in ["0", "error"]:
-            result.text = value
-        else:
-            result.text = result.text + value
+        result.text = result.text + value
     elif value == "C":
         # reset
-        result.text = "0"
-    elif value == "=":
+        result.text = ""
+    elif value == "M":
         # execute the formula in result zone
-        try:
-            result.text = eval(result.text)
-        except:
-            result.text = "error"
+        newGame.mix(result.text)
+        result.text = newGame.getLastRecipe() + ":" + newGame.getLastResult()
+
 
 # Associate above function action() to the event "click" on all buttons
 for button in document.select("td"):

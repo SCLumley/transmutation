@@ -256,7 +256,7 @@ class game:
         textcolour = Fore.WHITE
         textbuffer = ""
         if recipe in self.recipeHistory:
-            print("Sorry, you mixed that before. You found the following last time:")
+            textbuffer += "Sorry, you mixed that before. You found the following last time:"
             textcolour = Fore.RED
 
 
