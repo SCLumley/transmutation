@@ -327,7 +327,7 @@ class game:
         if weakReactions > 0:
             textbuffer += "There were: " + str(weakReactions) + " weak reactions.\n"
         if strongReactions > 0:
-            textbuffer += textcolour + "There were: " + str(strongReactions) + " strong reactions.\n"
+            textbuffer += "There were: " + str(strongReactions) + " strong reactions.\n"
             products=self.rng.shuffle(products)
             textbuffer += "There were: " + str(strongReactions) + " strong reactions.\n"
             for p in products:
@@ -335,7 +335,7 @@ class game:
                     wincount += 1
                 textbuffer = self.strongRactionResulttoBuffer(p,textbuffer)
         if exhaustedReactions > 0:
-            textbuffer += textcolour + "There were: " + str(exhaustedReactions) + " Exhausted Reactions.\n"
+            textbuffer += "There were: " + str(exhaustedReactions) + " Exhausted Reactions.\n"
             nonProducts=self.rng.shuffle(nonProducts)
             textbuffer += "There were: " + str(exhaustedReactions) + " Exhausted Reactions.\n"
             for p in nonProducts:
