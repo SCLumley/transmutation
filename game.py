@@ -55,7 +55,7 @@ class game:
 
 
         self.ingredients = ["n","a","q","l","p"]
-        self.ingredientsLongnames = ["Nitre Powder", "Aqua Fortis", "Quicksilver", "Lead Dust", "Phosphoric Salt"]
+        self.ingredientsLongnames = ["Nitre Powder", "Aqua Fortis", "Quicksilver", "Lead Metal", "Phosphoric Salt"]
         self.domains = ["Jupiter", "Mars", "Sol", "Venus", "Saturn"]
 
         self.mandatoryEffects = [
@@ -91,12 +91,12 @@ class game:
             "You have found Nitre Powder has {} horizontal reactions",
             "You have found Aqua Forte has {} horizontal reactions",
             "You have found Quicksilver has {} horizontal reactions",
-            "You have found Lead Dust has {} horizontal reactions",
+            "You have found Lead Metal has {} horizontal reactions",
             "You have found Phosphoric Salt has {} horizontal reactions",
             "You have found Nitre Powder has {} vertical reactions",
             "You have found Aqua Forte has {} vertical reactions",
             "You have found Quicksilver has {} vertical reactions",
-            "You have found Lead Dust has {} vertical reactions",
+            "You have found Lead Metal has {} vertical reactions",
             "You have found Phosphoric Salt has {} vertical reactions",
             "The Mind can be found in the Domain of {}",
             "The Spirit can be found in the Domain of {}",
@@ -171,7 +171,7 @@ class game:
                 textbuffer += "\t" + p.format(self.vValence[1]) + "\n"
             if "Quicksilver" in p:
                 textbuffer += "\t" + p.format(self.vValence[2]) + "\n"
-            if "Lead Dust" in p:
+            if "Lead Metal" in p:
                 textbuffer += "\t" + p.format(self.vValence[3]) + "\n"
             if "Phosphoric Salt" in p:
                 textbuffer += "\t" + p.format(self.vValence[4]) + "\n"
@@ -182,7 +182,7 @@ class game:
                 textbuffer += "\t" + p.format(self.hValence[1]) + "\n"
             if "Quicksilver" in p:
                 textbuffer += "\t" + p.format(self.hValence[2]) + "\n"
-            if "Lead Dust" in p:
+            if "Lead Metal" in p:
                 textbuffer += "\t" + p.format(self.hValence[3]) + "\n"
             if "Phosphoric Salt" in p:
                 textbuffer += "\t" + p.format(self.hValence[4]) + "\n"
