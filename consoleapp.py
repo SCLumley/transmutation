@@ -16,6 +16,8 @@ def parseTextColour(colour):
         textColour = Fore.YELLOW
     return textColour
 
+
+
 while True:
     sd = input("Input game seed (0-9999999):\n")
     if sd.isnumeric() and int(sd) > 0:

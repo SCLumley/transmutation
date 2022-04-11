@@ -1,4 +1,3 @@
-import random
 
 
 def split(word):
@@ -11,19 +10,52 @@ def get_overlapping_pairs(string):
                                   # beginning at that index
     return ret
 
+#Because this script is likley going to be run through brython - a javascript interpreter, and because
+# javascript's random function cannot be seeded by the user, I am implementing my own bare-bones prng here.
+# for reference, this is a simple lehmer random number generator
+class randomNumberGenerator:
+    def __init__(self, seed):
+        self.seed = seed
+        self.current = 0
+        self.gen(seed)
+
+    def gen(self,prev):
+        self.current = prev * 48271 % (2**31 - 1)
+
+    def get(self):
+        self.gen(self.current)
+        return self.current
+
+    def randrange(self,lower,upper):
+        range = upper - lower + 1
+        self.gen(self.current)
+        rn = lower + self.current % range
+        return rn
+
+    def shuffle(self,list):
+        outlist=list
+        copylist = list[:]
+        newlist=[]
+        while len(copylist) > 0:
+            newlist.append(copylist.pop(self.randrange(0,len(copylist)-1)))
+        outlist=newlist
+        return outlist
+
+
 class game:
     def __init__(self, seed, playerNo=1,difficulty=2):
-        self.gameSeed=seed
-        self.rng = random.Random(seed)
-        self.plyrng = random.Random(seed + playerNo)
-        self.won = False
+        self.gameSeed=int(seed)
+        self.player = int(playerNo)
         self.difficulty = int(difficulty)
+        self.rng = randomNumberGenerator(self.gameSeed)
+        self.plyrng = randomNumberGenerator(self.gameSeed + self.player)
+        self.won = False
 
         self.textColour = '#000000'
 
 
         self.ingredients = ["n","a","q","l","p"]
-        self.ingredientsLongnames = ["Nitre Powder", "Aqua Fortis", "Quicksilver", "Lead Dust", "Phosphoric Salt"]
+        self.ingredientsLongnames = ["Nitre Powder", "Aqua Fortis", "Quicksilver", "Lead Metal", "Phosphoric Salt"]
         self.domains = ["Jupiter", "Mars", "Sol", "Venus", "Saturn"]
 
         self.mandatoryEffects = [
@@ -59,12 +91,12 @@ class game:
             "You have found Nitre Powder has {} horizontal reactions",
             "You have found Aqua Forte has {} horizontal reactions",
             "You have found Quicksilver has {} horizontal reactions",
-            "You have found Lead Dust has {} horizontal reactions",
+            "You have found Lead Metal has {} horizontal reactions",
             "You have found Phosphoric Salt has {} horizontal reactions",
             "You have found Nitre Powder has {} vertical reactions",
             "You have found Aqua Forte has {} vertical reactions",
             "You have found Quicksilver has {} vertical reactions",
-            "You have found Lead Dust has {} vertical reactions",
+            "You have found Lead Metal has {} vertical reactions",
             "You have found Phosphoric Salt has {} vertical reactions",
             "The Mind can be found in the Domain of {}",
             "The Spirit can be found in the Domain of {}",
@@ -83,7 +115,7 @@ class game:
         ]
 
         self.optionalEffects = self.bonusEffects[:] + self.informationEffects[:]
-        self.rng.shuffle(self.optionalEffects)
+        self.optionalEffects = self.rng.shuffle(self.optionalEffects)
         self.NoptEffects=self.rng.randrange(2,6)
         self.effects = self.mandatoryEffects[:] + self.optionalEffects[:self.NoptEffects]
         self.vValence = [0,0,0,0,0]
@@ -139,7 +171,7 @@ class game:
                 textbuffer += "\t" + p.format(self.vValence[1]) + "\n"
             if "Quicksilver" in p:
                 textbuffer += "\t" + p.format(self.vValence[2]) + "\n"
-            if "Lead Dust" in p:
+            if "Lead Metal" in p:
                 textbuffer += "\t" + p.format(self.vValence[3]) + "\n"
             if "Phosphoric Salt" in p:
                 textbuffer += "\t" + p.format(self.vValence[4]) + "\n"
@@ -150,7 +182,7 @@ class game:
                 textbuffer += "\t" + p.format(self.hValence[1]) + "\n"
             if "Quicksilver" in p:
                 textbuffer += "\t" + p.format(self.hValence[2]) + "\n"
-            if "Lead Dust" in p:
+            if "Lead Metal" in p:
                 textbuffer += "\t" + p.format(self.hValence[3]) + "\n"
             if "Phosphoric Salt" in p:
                 textbuffer += "\t" + p.format(self.hValence[4]) + "\n"
@@ -158,18 +190,21 @@ class game:
             for rowindex, row in enumerate(self.solMatrix):
                 for columnindex,cell in enumerate(row):
                     if "Essence of Mind" in self.effects[cell - 1] and "Mind" in p:
-                        random.seed(str(self.gameSeed) + "Mind")
-                        ingredient = self.ingredientsLongnames[random.choice((rowindex,columnindex))]
+                        newrand = randomNumberGenerator(self.gameSeed)
+                        twoingredients = (rowindex, columnindex)
+                        ingredient = self.ingredientsLongnames[twoingredients[newrand.randrange(0,1)]]
                         textbuffer += "\t" + p.format(ingredient) + "\n"
                         break
                     if "Essence of Body" in self.effects[cell - 1] and "Body" in p:
-                        random.seed(str(self.gameSeed) + "Body")
-                        ingredient = self.ingredientsLongnames[random.choice((rowindex,columnindex))]
+                        newrand = randomNumberGenerator(self.gameSeed)
+                        twoingredients = (rowindex, columnindex)
+                        ingredient = self.ingredientsLongnames[twoingredients[newrand.randrange(0,1)]]
                         textbuffer += "\t" + p.format(ingredient) + "\n"
                         break
                     if "Essence of Spirit" in self.effects[cell - 1] and "Spirit" in p:
-                        random.seed(str(self.gameSeed) + "Spirit")
-                        ingredient = self.ingredientsLongnames[random.choice((rowindex,columnindex))]
+                        newrand = randomNumberGenerator(self.gameSeed)
+                        twoingredients = (rowindex, columnindex)
+                        ingredient = self.ingredientsLongnames[twoingredients[newrand.randrange(0,1)]]
                         textbuffer += "\t" + p.format(ingredient) + "\n"
                         break
         elif "can be found in the Domain of" in p:
@@ -204,8 +239,9 @@ class game:
         for effectIndex, effect in enumerate(self.effects):
             keepgoing = True
             while keepgoing:
-                first = self.rng.randrange(0,5)
-                second = self.rng.randrange(0, 5)
+                first = self.rng.randrange(0,4)
+                second = self.rng.randrange(0, 4)
+                print(first,second)
                 if matrix[first][second] == 0 and matrix[second][first] == 0:
                     matrix[first][second] = effectIndex + 1
                     self.hValence[first] += 1
@@ -226,7 +262,7 @@ class game:
             textbuffer += "\tThere are {} exhaustible reactions.\n".format(self.NoptEffects)
             if self.difficulty >= 1:
                 startingEffects = self.effects[:]
-                self.plyrng.shuffle(startingEffects)
+                startingEffects = self.plyrng.shuffle(startingEffects)
                 knownEffects = startingEffects[ 0 : self.difficulty ]
                 for effect in knownEffects:
                     effectindex = self.effects.index(effect) + 1
@@ -236,7 +272,7 @@ class game:
                                 textbuffer += "\t" + self.ingredients[row] + self.ingredients[column] + " produces a strong reaction.\n"
             if self.difficulty >= 2:
                 startingEffects = self.informationEffects[:]
-                self.plyrng.shuffle(startingEffects)
+                startingEffects = self.plyrng.shuffle(startingEffects)
                 startingEffects = startingEffects[0 : self.difficulty-1]
                 for p in startingEffects:
                     textbuffer = self.strongRactionResulttoBuffer(p, textbuffer)
@@ -291,14 +327,16 @@ class game:
             textbuffer += "There were: " + str(weakReactions) + " weak reactions.\n"
         if strongReactions > 0:
             textbuffer += "There were: " + str(strongReactions) + " strong reactions.\n"
-            self.rng.shuffle(products)
+            products=self.rng.shuffle(products)
+            textbuffer += "There were: " + str(strongReactions) + " strong reactions.\n"
             for p in products:
                 if "Essence" in p:
                     wincount += 1
                 textbuffer = self.strongRactionResulttoBuffer(p,textbuffer)
         if exhaustedReactions > 0:
             textbuffer += "There were: " + str(exhaustedReactions) + " Exhausted Reactions.\n"
-            self.rng.shuffle(nonProducts)
+            nonProducts=self.rng.shuffle(nonProducts)
+            textbuffer += "There were: " + str(exhaustedReactions) + " Exhausted Reactions.\n"
             for p in nonProducts:
                 textbuffer = self.strongRactionResulttoBuffer(p, textbuffer)
         if weakReactions == 0 and strongReactions == 0 and exhaustedReactions == 0:
@@ -340,12 +378,5 @@ class game:
 
     def getGameOver(self):
         return self.won
-
-
-
-
-
-
-
 
 
