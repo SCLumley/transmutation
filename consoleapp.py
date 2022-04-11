@@ -4,6 +4,8 @@ sd=1
 pn=1
 dif=1
 
+
+
 while True:
     sd = input("Input game seed (0-9999999):\n")
     if sd.isnumeric() and int(sd) > 0:
