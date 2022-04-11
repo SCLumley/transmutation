@@ -1,5 +1,4 @@
 import random
-from colorama import Fore
 
 
 def split(word):
@@ -53,16 +52,19 @@ class game:
         self.plyrng = randomNumberGenerator(self.gameSeed + self.player)
         self.won = False
 
+        self.textColour = '#000000'
+
+
         self.ingredients = ["n","a","q","l","p"]
         self.ingredientsLongnames = ["Nitre Powder", "Aqua Fortis", "Quicksilver", "Lead Dust", "Phosphoric Salt"]
         self.domains = ["Jupiter", "Mars", "Sol", "Venus", "Saturn"]
 
         self.mandatoryEffects = [
-            "2 Nitre Powder",
-            "2 Aqua Fortis",
-            "2 Quicksilver",
-            "2 Lead Dust",
-            "2 Phosphoric Salt",
+            "3 Nitre Powder",
+            "3 Aqua Fortis",
+            "3 Quicksilver",
+            "3 Lead Dust",
+            "3 Phosphoric Salt",
             "The Mixture has Essence of Mind",
             "The Mixture has Essence of Body",
             "The Mixture has Essence of Spirit"
@@ -289,12 +291,11 @@ class game:
             print('Invalid recipe. a recipe must only contain characters n, a, q, l, or p, and must be between 2 and '
                   '6 characters long (inclusive)."')
             return
-        textcolour = Fore.WHITE
+        self.textColour = '#000000'
         textbuffer = ""
         if recipe in self.recipeHistory:
             textbuffer += "Sorry, you mixed that before. You found the following last time:"
-            textcolour = Fore.RED
-
+            self.textColour = '#ff0000'
 
         self.recipeHistory.append(recipe)
         pairs = get_overlapping_pairs(recipe)
@@ -324,10 +325,11 @@ class game:
 
         #2. store to buffer
         if weakReactions > 0:
-            textbuffer += textcolour + "There were: " + str(weakReactions) + " weak reactions.\n"
+            textbuffer += "There were: " + str(weakReactions) + " weak reactions.\n"
         if strongReactions > 0:
             textbuffer += textcolour + "There were: " + str(strongReactions) + " strong reactions.\n"
             products=self.rng.shuffle(products)
+            textbuffer += "There were: " + str(strongReactions) + " strong reactions.\n"
             for p in products:
                 if "Essence" in p:
                     wincount += 1
@@ -335,12 +337,14 @@ class game:
         if exhaustedReactions > 0:
             textbuffer += textcolour + "There were: " + str(exhaustedReactions) + " Exhausted Reactions.\n"
             nonProducts=self.rng.shuffle(nonProducts)
+            textbuffer += "There were: " + str(exhaustedReactions) + " Exhausted Reactions.\n"
             for p in nonProducts:
                 textbuffer = self.strongRactionResulttoBuffer(p, textbuffer)
         if weakReactions == 0 and strongReactions == 0 and exhaustedReactions == 0:
-            textbuffer += textcolour + "There were no reactions.\n"
+            textbuffer += "There were no reactions.\n"
         if wincount == 3:
-            textbuffer += Fore.YELLOW + "You have synthesised the philosopher's stone!"
+            self.textColour = '#ffbb00'
+            textbuffer += "You have synthesised the philosopher's stone!"
             self.won = True
 
         textbuffer +="\n"
@@ -368,6 +372,10 @@ class game:
             textbuffer+= str(i) + ": " + n + "\n"
             i += 1
         return textbuffer
+
+
+    def getTextColour(self):
+        return self.textColour
 
     def getGameOver(self):
         return self.won
