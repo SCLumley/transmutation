@@ -1,5 +1,3 @@
-
-
 def split(word):
     return [char for char in word]
 
@@ -59,32 +57,32 @@ class game:
         self.domains = ["Jupiter", "Mars", "Sol", "Venus", "Saturn"]
 
         self.mandatoryEffects = [
-            "3 Nitre Powder",
-            "3 Aqua Fortis",
-            "3 Quicksilver",
-            "3 Lead Dust",
-            "3 Phosphoric Salt",
+            "Gain 3 Nitre Powder",
+            "Gain 3 Aqua Fortis",
+            "Gain 3 Quicksilver",
+            "Gain 3 Lead Metal",
+            "Gain 3 Phosphoric Salt",
             "The Mixture has Essence of Mind",
             "The Mixture has Essence of Body",
             "The Mixture has Essence of Spirit"
         ]
 
         self.bonusEffects = [
-            "2 Dice",
-            "2 Dice",
-            "2 Dice",
-            "2 Dice",
-            "2 Dice",
-            "2 Dice",
-            "3 Gold",
-            "3 Gold",
-            "3 Gold",
-            "3 Gold",
-            "3 Gold",
-            "3 Gold",
-            "5 Gold",
-            "5 Gold",
-            "5 Gold"
+            "Gain 2 Dice",
+            "Gain 2 Dice",
+            "Gain 2 Dice",
+            "Gain 2 Dice",
+            "Gain 2 Dice",
+            "Gain 2 Dice",
+            "Gain 3 Gold",
+            "Gain 3 Gold",
+            "Gain 3 Gold",
+            "Gain 3 Gold",
+            "Gain 3 Gold",
+            "Gain 3 Gold",
+            "Gain 5 Gold",
+            "Gain 5 Gold",
+            "Gain 5 Gold"
         ]
 
         self.informationEffects = [
@@ -241,14 +239,12 @@ class game:
             while keepgoing:
                 first = self.rng.randrange(0,4)
                 second = self.rng.randrange(0, 4)
-                print(first,second)
                 if matrix[first][second] == 0 and matrix[second][first] == 0:
                     matrix[first][second] = effectIndex + 1
                     self.hValence[first] += 1
                     self.vValence[second] += 1
                     domain=self.domainMask[first][second]
                     self.domainMatrix[domain].append(effectIndex + 1)
-
                     keepgoing = False
                     break
         return matrix
@@ -279,7 +275,6 @@ class game:
 
         self.startingFacts = textbuffer
 
-
     def getStartingFacts(self):
         return self.startingFacts
 
@@ -293,7 +288,7 @@ class game:
         self.textColour = '#000000'
         textbuffer = ""
         if recipe in self.recipeHistory:
-            textbuffer += "Sorry, you mixed that before. You found the following last time:"
+            textbuffer += "You have mixed that before, and cannot gain any bonus ingredients. When you mixed it last time, you found:\n"
             self.textColour = '#ff0000'
 
         self.recipeHistory.append(recipe)
@@ -326,7 +321,6 @@ class game:
         if weakReactions > 0:
             textbuffer += "There were: " + str(weakReactions) + " weak reactions.\n"
         if strongReactions > 0:
-            textbuffer += "There were: " + str(strongReactions) + " strong reactions.\n"
             products=self.rng.shuffle(products)
             textbuffer += "There were: " + str(strongReactions) + " strong reactions.\n"
             for p in products:
@@ -334,7 +328,6 @@ class game:
                     wincount += 1
                 textbuffer = self.strongRactionResulttoBuffer(p,textbuffer)
         if exhaustedReactions > 0:
-            textbuffer += "There were: " + str(exhaustedReactions) + " Exhausted Reactions.\n"
             nonProducts=self.rng.shuffle(nonProducts)
             textbuffer += "There were: " + str(exhaustedReactions) + " Exhausted Reactions.\n"
             for p in nonProducts:
@@ -343,7 +336,7 @@ class game:
             textbuffer += "There were no reactions.\n"
         if wincount == 3:
             self.textColour = '#ffbb00'
-            textbuffer += "You have synthesised the philosopher's stone!"
+            textbuffer += "You have synthesised the Philosopher's Stone!"
             self.won = True
 
         textbuffer +="\n"
@@ -371,7 +364,6 @@ class game:
             textbuffer+= str(i) + ": " + n + "\n"
             i += 1
         return textbuffer
-
 
     def getTextColour(self):
         return self.textColour
