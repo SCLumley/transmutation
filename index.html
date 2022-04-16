@@ -476,7 +476,7 @@ def action(event):
         # execute the formula in result zone
         newGame.mix(input.text)
         input.text = " "
-        result.text = result.text + "\n" + newGame.getLastRecipe() + ":" + newGame.getLastResult()
+        result.text = newGame.getLastRecipe() + ":" + newGame.getLastResult() + "\n" + result.text
 
 # Associate above function action() to the event "click" on all buttons
 for button in document.select("td"):
