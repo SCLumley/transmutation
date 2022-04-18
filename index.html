@@ -48,14 +48,12 @@
 <body onload="brython()">
 
 <script type="text/python" id="game">
-
-
 def split(word):
     return [char for char in word]
 
 def get_overlapping_pairs(string):
     ret = [] # we will return this later
-    for i in range(len(string)-1): # loop through all indices except the last one
+    for i in range(0,len(string)-1): # loop through all indices except the last one
         ret.append(string[i:i+2]) # append to ret the two characters
                                   # beginning at that index
     return ret
@@ -180,11 +178,11 @@ class game:
         ]
 
         self.domainMask = [
-            [0, 0, 0, 1, 1],
+            [0, 0, 1, 1, 1],
             [0, 0, 2, 1, 1],
-            [3, 2, 2, 2, 1],
+            [0, 2, 2, 2, 4],
             [3, 3, 2, 4, 4],
-            [3, 3, 4, 4, 4]
+            [3, 3, 3, 4, 4]
         ]
 
         self.domainMatrix=[
@@ -292,11 +290,14 @@ class game:
                 first = self.rng.randrange(0,4)
                 second = self.rng.randrange(0, 4)
                 if matrix[first][second] == 0 and matrix[second][first] == 0:
+                    print("adding reaction: ", effectIndex + 1 , "to", first+1,second+1)
                     matrix[first][second] = effectIndex + 1
                     self.hValence[first] += 1
                     self.vValence[second] += 1
-                    domain=self.domainMask[first][second]
+                    domain = self.domainMask[first][second]
+                    print(domain)
                     self.domainMatrix[domain].append(effectIndex + 1)
+                    print(self.domainMatrix)
                     keepgoing = False
                     break
         return matrix
