@@ -240,14 +240,11 @@ class game:
                 first = self.rng.randrange(0,4)
                 second = self.rng.randrange(0, 4)
                 if matrix[first][second] == 0 and matrix[second][first] == 0:
-                    print("adding reaction: ", effectIndex + 1 , "to", first+1,second+1)
                     matrix[first][second] = effectIndex + 1
                     self.hValence[first] += 1
                     self.vValence[second] += 1
                     domain = self.domainMask[first][second]
-                    print(domain)
                     self.domainMatrix[domain].append(effectIndex + 1)
-                    print(self.domainMatrix)
                     keepgoing = False
                     break
         return matrix
