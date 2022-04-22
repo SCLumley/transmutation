@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Transmutation</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="style.css?10">
+</head>
+
+<body>
+	<div id="game">
+		<div id="header">Transmutation</div>
+		<div id="log"></div>
+		<div id="actions">
+			<div id="ingredients">
+				<div class="ingredient" onclick="addIngredient(this);" ingredient="Nitre Powder" letter="n">
+					<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 313.6 400.1" style="enable-background:new 0 0 313.6 400.1;" xml:space="preserve">
+						<path fill="currentColor" d="M215.6,98V75.6h16.8V44.8H81.2l0,30.8H98V98c-45.3,18.3-79.5,56.8-92.4,103.9c-12.9,47.2-3.1,97.7,26.6,136.5c29.7,38.9,75.8,61.7,124.7,61.7s95-22.8,124.7-61.7c29.7-38.9,39.5-89.4,26.6-136.5C295.1,154.8,260.9,116.3,215.6,98L215.6,98z"/>
+						<path class="cork" d="M109.2,0h95.2c6.2,0,11.2,6.2,11.2,11.2v11.2c0,6.2-5,11.2-11.2,11.2h-95.2C103,33.6,98,27.4,98,22.4V11.2C98,5,103,0,109.2,0z"/>
+					</svg>
+				</div>
+				<div class="ingredient" onclick="addIngredient(this);" ingredient="Aqua Fortis" letter="a">
+					<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 313.6 400.1" style="enable-background:new 0 0 313.6 400.1;" xml:space="preserve">
+						<path fill="currentColor" d="M215.6,98V75.6h16.8V44.8H81.2l0,30.8H98V98c-45.3,18.3-79.5,56.8-92.4,103.9c-12.9,47.2-3.1,97.7,26.6,136.5c29.7,38.9,75.8,61.7,124.7,61.7s95-22.8,124.7-61.7c29.7-38.9,39.5-89.4,26.6-136.5C295.1,154.8,260.9,116.3,215.6,98L215.6,98z"/>
+						<path class="cork" d="M109.2,0h95.2c6.2,0,11.2,6.2,11.2,11.2v11.2c0,6.2-5,11.2-11.2,11.2h-95.2C103,33.6,98,27.4,98,22.4V11.2C98,5,103,0,109.2,0z"/>
+					</svg>
+				</div>
+				<div class="ingredient" onclick="addIngredient(this);" ingredient="Quicksilver" letter="q">
+					<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 313.6 400.1" style="enable-background:new 0 0 313.6 400.1;" xml:space="preserve">
+						<path fill="currentColor" d="M215.6,98V75.6h16.8V44.8H81.2l0,30.8H98V98c-45.3,18.3-79.5,56.8-92.4,103.9c-12.9,47.2-3.1,97.7,26.6,136.5c29.7,38.9,75.8,61.7,124.7,61.7s95-22.8,124.7-61.7c29.7-38.9,39.5-89.4,26.6-136.5C295.1,154.8,260.9,116.3,215.6,98L215.6,98z"/>
+						<path class="cork" d="M109.2,0h95.2c6.2,0,11.2,6.2,11.2,11.2v11.2c0,6.2-5,11.2-11.2,11.2h-95.2C103,33.6,98,27.4,98,22.4V11.2C98,5,103,0,109.2,0z"/>
+					</svg>
+				</div>
+				<div class="ingredient" onclick="addIngredient(this);" ingredient="Lead Metal" letter="l">
+					<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 313.6 400.1" style="enable-background:new 0 0 313.6 400.1;" xml:space="preserve">
+						<path fill="currentColor" d="M215.6,98V75.6h16.8V44.8H81.2l0,30.8H98V98c-45.3,18.3-79.5,56.8-92.4,103.9c-12.9,47.2-3.1,97.7,26.6,136.5c29.7,38.9,75.8,61.7,124.7,61.7s95-22.8,124.7-61.7c29.7-38.9,39.5-89.4,26.6-136.5C295.1,154.8,260.9,116.3,215.6,98L215.6,98z"/>
+						<path class="cork" d="M109.2,0h95.2c6.2,0,11.2,6.2,11.2,11.2v11.2c0,6.2-5,11.2-11.2,11.2h-95.2C103,33.6,98,27.4,98,22.4V11.2C98,5,103,0,109.2,0z"/>
+					</svg>
+				</div>
+				<div class="ingredient" onclick="addIngredient(this);" ingredient="Phosphoric Salt" letter="p">
+					<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 313.6 400.1" style="enable-background:new 0 0 313.6 400.1;" xml:space="preserve">
+						<path fill="currentColor" d="M215.6,98V75.6h16.8V44.8H81.2l0,30.8H98V98c-45.3,18.3-79.5,56.8-92.4,103.9c-12.9,47.2-3.1,97.7,26.6,136.5c29.7,38.9,75.8,61.7,124.7,61.7s95-22.8,124.7-61.7c29.7-38.9,39.5-89.4,26.6-136.5C295.1,154.8,260.9,116.3,215.6,98L215.6,98z"/>
+						<path class="cork" d="M109.2,0h95.2c6.2,0,11.2,6.2,11.2,11.2v11.2c0,6.2-5,11.2-11.2,11.2h-95.2C103,33.6,98,27.4,98,22.4V11.2C98,5,103,0,109.2,0z"/>
+					</svg>
+				</div>
+			</div>
+			
+			<div id="mixture">
+				<div id="mortar" onclick="mixIngredients();">
+					<div id="recipe"></div>
+				</div>
+				<div id="undo" onclick="removeIngredient();" disabled></div>
+			</div>
+		</div>
+		
+		<!-- OVERLAY / GAME SETTINGS FORM -->
+		<div id="overlay" class="hidden">
+			<div id="game-settings">
+				<div class="title">
+					New Game Settings
+				</div>
+				<div class="field">
+					<div class="label">Game Seed <i>(0 - 9999999)</i></div>
+					<input type="text" name="seed">
+				</div>
+				
+				<div class="field">
+					<div class="label">Player Count <i>(1 - 4)</i></div>
+					<select name="playerCount">
+						<option value=1>1</option>
+						<option value=2>2</option>
+						<option value=3>3</option>
+						<option value=4>4</option>
+					</select>
+				</div>
+				
+				<div class="field">
+					<div class="label">Game Difficulty <i>(0 - 5, 0 = hardest)</i></div>
+					<select name="difficulty">
+						<option value=0>0</option>
+						<option value=1>1</option>
+						<option value=2>2</option>
+						<option value=3>3</option>
+						<option value=4>4</option>
+						<option value=5>5</option>
+					</select>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script>
+var GAME = {
+	'seed': Math.floor(Math.random() * (9999999 + 1)),
+	'playerCount': 1,
+	'difficulty': 4,
+	'events': []
+};
+var log = document.querySelector('#log');
+var recipe = document.querySelector('#recipe');
+
+localStorage.removeItem('game'); // temporary disables game saves
+
+// detect game state
+if (localStorage['game'] == undefined) {
+	//newGame();
+}
+else {
+	loadGame();
+}
+
+function newGame() {
+	document.querySelector('[name="seed"]').value = GAME['seed'];
+	document.querySelector('[name="playerCount"]').value = GAME['playerCount'];
+	document.querySelector('[name="difficulty"]').value = GAME['difficulty'];
+	document.querySelector('#overlay').classList.remove('hidden');
+}
+
+function loadGame() {
+	document.querySelector('#overlay').classList.add('hidden');
+	
+	GAME = JSON.parse(localStorage['game']);
+	
+	for (var i = 0; i < GAME['events'].length; i++) {
+		log.innerHTML += GAME['events'][i]['result'];
+	}
+}
+
+function saveGame() {
+	localStorage['game'] = JSON.stringify(GAME);
+}
+
+recipe.addEventListener("DOMSubtreeModified", function () {
+	if (this.innerText.length >= 2 && this.innerText.length <= 6) {
+		document.querySelector('#mortar').setAttribute('mix', null);
+	}
+	else {
+		document.querySelector('#mortar').removeAttribute('mix');
+	}
+	if (this.innerText.length >= 1) {
+		document.querySelector('#undo').removeAttribute('disabled');
+	}
+	else {
+		document.querySelector('#undo').setAttribute('disabled', null);
+	}
+}, false);
+
+function addIngredient(ingredient) {
+	if (recipe.innerText.length < 6) {
+		recipe.innerText += ingredient.getAttribute('letter');
+		
+		// Rotate bottle animation
+		ingredient.setAttribute('mix', null);
+		setTimeout(function() { ingredient.removeAttribute('mix'); }, 1000)
+	}
+}
+
+function removeIngredient() {
+	var mixture = recipe.innerText;
+	recipe.innerText = mixture.slice(0, -1);
+}
+
+function mixIngredients() {
+	if (recipe.innerText.length < 2) { return false; }
+	
+	var reaction = 'You made a reaction.'; // this is normally generated from the algorithm
+	var result = '<div><b>' + recipe.innerText + '</b>:&nbsp;' + reaction + '</div>';
+
+	log.innerHTML += result;
+	log.scrollTop = log.scrollHeight; // scroll to bottom of log
+	
+	GAME['events'].push({
+		'recipe': recipe.innerText,
+		'result': result
+	});
+	
+	saveGame();
+	
+	recipe.innerText = '';
+}
+</script>
+</html>
