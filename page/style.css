@@ -51,6 +51,7 @@ html {
 	padding: 25px;
 	/* max-width: 500px; */
 	user-select: none;
+	white-space:pre-wrap;
 	width: 100%;
 }
 #log div {
